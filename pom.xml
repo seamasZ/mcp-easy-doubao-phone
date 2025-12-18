@@ -5,8 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>mcp-android-adb-server</artifactId>
+    <artifactId>mcp-easy-doubao-phone</artifactId>
     <version>1.0.0</version>
+    <name>MCP简易豆包手机</name>
+    <description>基于MCP框架的简易豆包手机智能助手 - 提供AI视觉理解和自然语言控制的Android设备管理工具</description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

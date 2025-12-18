@@ -1,8 +1,8 @@
-# MCP Android ADB Server - 简易版豆包手机智能助手
+# MCP 简易豆包手机智能助手
 
 🔥 **AI驱动的Android设备智能管家** - 像豆包一样理解和控制你的手机！🔥
 
-这是一个基于Java开发的智能Android ADB服务器，集成了先进的AI视觉模型，能够**看懂**手机屏幕并通过自然语言指令控制设备。它就像是一个运行在电脑上的"简易版豆包手机助手"，让你通过命令行与手机进行智能交互。
+这是一个基于Java开发的AI增强型Android ADB服务器，集成了先进的AI视觉模型。它能**看懂**手机屏幕并通过自然语言指令控制设备，就像一个运行在电脑上的"简易版豆包手机助手"，让你通过命令行与手机进行智能交互。
 
 ## 🚀 核心亮点
 
@@ -49,7 +49,7 @@
 
 ```bash
 git clone <repository-url>
-cd mcp-android-adb-server
+cd mcp-easy-doubao-phone
 ```
 
 ### 2. 构建智能助手
@@ -70,7 +70,7 @@ export VISION_MODEL="qwen2.5-vl-7b-instruct"  # 或使用gpt-4-vision-preview
 ### 4. 启动智能助手
 
 ```bash
-java -jar target/mcp-android-adb-server-1.0.0-jar-with-dependencies.jar -d <device-id>
+java -jar target/mcp-easy-doubao-phone-1.0.0-jar-with-dependencies.jar -d <device-id>
 ```
 
 ## 🎮 使用示例
@@ -79,7 +79,7 @@ java -jar target/mcp-android-adb-server-1.0.0-jar-with-dependencies.jar -d <devi
 
 ```bash
 # 启动智能助手
-java -jar mcp-android-adb-server.jar -d emulator-5554
+java -jar target/mcp-easy-doubao-phone-1.0.0-jar-with-dependencies.jar -d emulator-5554
 
 # 查看当前屏幕内容
 > describe-screen
@@ -159,7 +159,7 @@ java -jar mcp-android-adb-server.jar -d emulator-5554
 ### 命令行参数
 
 ```bash
-java -jar mcp-android-adb-server.jar \
+java -jar mcp-easy-doubao-phone-1.0.0-jar-with-dependencies.jar \
   -d <device-id>      # 设备ID
   -a <adb-path>       # ADB路径
   -k <api-key>        # AI API密钥
@@ -206,3 +206,5 @@ MIT License - 详见LICENSE文件
 💡 **提示**：本项目需要配合Android设备使用，确保已正确安装ADB并开启USB调试模式。视觉功能需要有效的OpenAI API密钥。
 
 📞 **技术支持**：遇到问题？查看项目文档或提交Issue获取帮助。
+
+[切换到英文版本](README.md)

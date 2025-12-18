@@ -1,209 +1,211 @@
-# MCP Android ADB Server - 简易版豆包手机智能助手
+# MCP Easy Doubao Phone AI Assistant
 
-🔥 **AI驱动的Android设备智能管家** - 像豆包一样理解和控制你的手机！🔥
+🔥 **AI-Driven Android Device Intelligent Manager** - Understand and control your phone like Doubao! 🔥
 
-这是一个基于Java开发的智能Android ADB服务器，集成了先进的AI视觉模型，能够**看懂**手机屏幕并通过自然语言指令控制设备。它就像是一个运行在电脑上的"简易版豆包手机助手"，让你通过命令行与手机进行智能交互。
+This is an AI-powered Android ADB server developed in Java, integrated with advanced AI vision models. It can **see** your phone screen and control the device through natural language commands. It's like a "simplified Doubao phone assistant" running on your computer, enabling intelligent interaction with your phone via command line.
 
-## 🚀 核心亮点
+## 🚀 Core Highlights
 
-### 🤖 AI视觉理解
-- **看懂屏幕内容**：集成GPT-4V/Qwen2-VL等先进AI视觉模型，能够像人一样理解手机屏幕上的文字、图片和界面元素
-- **智能元素识别**：自动识别屏幕上的按钮、输入框、应用图标等UI元素，并标注其位置和功能
-- **场景化描述**：根据上下文智能描述当前手机界面场景（如"正在微信聊天界面"、"显示淘宝商品详情"）
+### 🤖 AI Visual Understanding
+- **Screen Content Recognition**: Integrates advanced AI vision models like GPT-4V/Qwen2-VL to understand text, images, and interface elements on phone screens like humans do
+- **Intelligent Element Identification**: Automatically recognizes UI elements such as buttons, input fields, and app icons, and labels their positions and functions
+- **Contextual Description**: Intelligently describes current phone interface scenes based on context (e.g., "WeChat chat interface", "Taobao product details page")
 
-### 🎯 自然语言控制
-- **语音级指令**：支持类似自然语言的命令，例如"点击微信图标"、"输入验证码123456"、"返回主屏幕"
-- **多步任务执行**：能够理解和执行复杂的多步骤指令（如"打开相机，拍照，然后分享到朋友圈"）
-- **智能决策**：遇到歧义时能根据上下文做出合理推断
+### 🎯 Natural Language Control
+- **Voice-Level Commands**: Supports natural language commands like "tap WeChat icon", "input verification code 123456", "return to home screen"
+- **Multi-Step Task Execution**: Understands and executes complex multi-step commands (e.g., "open camera, take a photo, then share to Moments")
+- **Intelligent Decision Making**: Makes reasonable inferences based on context when encountering ambiguities
 
-### 📱 全功能设备管理
-- **应用管家**：安装/卸载/启动/停止应用，管理应用权限和数据
-- **屏幕控制**：解锁/锁定屏幕，获取分辨率，实时截图
-- **输入模拟**：模拟文本输入、按键操作、点击滑动、复杂手势
-- **设备监控**：获取设备信息、运行状态、电池电量等系统参数
+### 📱 Full-Featured Device Management
+- **App Manager**: Install/uninstall/launch/stop apps, manage app permissions and data
+- **Screen Control**: Unlock/lock screen, get resolution, real-time screenshots
+- **Input Simulation**: Simulate text input, key presses, taps, swipes, and complex gestures
+- **Device Monitoring**: Get device information, running status, battery level, and other system parameters
 
-## 🛠️ 技术架构
+## 🛠️ Technical Architecture
 
-### AI核心引擎
-- **视觉模型集成**：支持OpenAI GPT-4V、Qwen2-VL等多模型接入
-- **上下文理解**：基于MCP协议的模型上下文管理
-- **自然语言处理**：智能解析用户指令，生成执行计划
+### AI Core Engine
+- **Vision Model Integration**: Supports multiple AI vision models including OpenAI GPT-4V, Qwen2-VL
+- **Context Understanding**: Model context management based on MCP protocol
+- **Natural Language Processing**: Intelligently parses user commands and generates execution plans
 
-### 技术栈
-- **Java 11**：高性能后端实现
-- **Appium Java Client**：稳定的Android设备通信层
-- **OpenAI API**：AI视觉模型接口
-- **SLF4J/Logback**：企业级日志系统
-- **Maven**：标准化项目构建
+### Technology Stack
+- **Java 11**: High-performance backend implementation
+- **Appium Java Client**: Stable Android device communication layer
+- **OpenAI API**: AI vision model interface
+- **SLF4J/Logback**: Enterprise-level logging system
+- **Maven**: Standardized project build
 
-## 📋 系统要求
+## 📋 System Requirements
 
-- **Java 11+**：运行环境
-- **Android设备**：开启USB调试模式（Android 5.0+）
-- **ADB工具**：Android SDK Platform Tools
-- **AI API密钥**：OpenAI API密钥（用于视觉功能，可选）
+- **Java 11+**: Runtime environment
+- **Android Device**: USB debugging enabled (Android 5.0+)
+- **ADB Tool**: Android SDK Platform Tools
+- **AI API Key**: OpenAI API key (for vision features, optional)
 
-## 📦 快速开始
+## 📦 Quick Start
 
-### 1. 克隆项目
+### 1. Clone the Project
 
 ```bash
 git clone <repository-url>
-cd mcp-android-adb-server
+cd mcp-easy-doubao-phone
 ```
 
-### 2. 构建智能助手
+### 2. Build the AI Assistant
 
 ```bash
 mvn clean package
 ```
 
-构建完成后，智能助手JAR包将位于 `target` 目录下。
+After successful build, the AI assistant JAR package will be located in the `target` directory.
 
-### 3. 配置AI密钥（可选）
+### 3. Configure AI API Key (Optional)
 
 ```bash
 export OPENAI_API_KEY="your-openai-api-key"
-export VISION_MODEL="qwen2.5-vl-7b-instruct"  # 或使用gpt-4-vision-preview
+export VISION_MODEL="qwen2.5-vl-7b-instruct"  # Or use gpt-4-vision-preview
 ```
 
-### 4. 启动智能助手
+### 4. Start the AI Assistant
 
 ```bash
-java -jar target/mcp-android-adb-server-1.0.0-jar-with-dependencies.jar -d <device-id>
+java -jar target/mcp-easy-doubao-phone-1.0.0-jar-with-dependencies.jar -d <device-id>
 ```
 
-## 🎮 使用示例
+## 🎮 Usage Examples
 
-### 📱 基础操作
+### 📱 Basic Operations
 
 ```bash
-# 启动智能助手
-java -jar mcp-android-adb-server.jar -d emulator-5554
+# Start the AI assistant
+java -jar target/mcp-easy-doubao-phone-1.0.0-jar-with-dependencies.jar -d emulator-5554
 
-# 查看当前屏幕内容
+# View current screen content
 > describe-screen
 
-# 识别并点击微信图标
-> find-and-click "微信"
+# Identify and click WeChat icon
+> find-and-click "WeChat"
 
-# 输入文本
-> input-text "你好，这是豆包手机助手！"
+# Input text
+> input-text "Hello, this is Doubao Phone Assistant!"
 
-# 滑动屏幕
+# Swipe screen
 > swipe 100 500 900 500
 ```
 
-### 🤖 AI增强功能
+### 🤖 AI Enhanced Features
 
 ```bash
-# 描述当前界面
+# Describe current interface
 > describe-screen
-# AI回复："当前显示微信聊天界面，顶部是聊天对象'张三'，中间是聊天记录，底部是输入框"
+# AI Response: "Currently displaying WeChat chat interface, top shows chat contact 'Zhang San', middle shows chat history, bottom shows input field"
 
-# 智能查找元素
-> find-element "发送按钮"
-# AI回复："找到发送按钮，位置：(900, 1700)，大小：(100x50)"
+# Intelligently find elements
+> find-element "send button"
+# AI Response: "Found send button, position: (900, 1700), size: (100x50)"
 
-# 执行复杂任务
-> execute "打开设置，找到Wi-Fi选项，连接到名为'HomeWiFi'的网络"
-# 助手自动执行：解锁屏幕 → 打开设置 → 点击Wi-Fi → 选择HomeWiFi → 等待连接完成
+# Execute complex tasks
+> execute "open settings, find Wi-Fi option, connect to network named 'HomeWiFi'"
+# Assistant automatically executes: unlock screen → open settings → tap Wi-Fi → select HomeWiFi → wait for connection
 ```
 
-## 🎨 功能列表
+## 🎨 Feature List
 
-### 🔍 AI视觉功能
-- `describe-screen`：用自然语言描述当前屏幕内容
-- `annotate-screen`：标注屏幕上的所有可交互元素
-- `find-element <description>`：根据描述查找特定屏幕元素
-- `find-and-click <description>`：查找并点击指定元素
+### 🔍 AI Vision Features
+- `describe-screen`: Describe current screen content in natural language
+- `annotate-screen`: Annotate all interactive elements on the screen
+- `find-element <description>`: Find specific screen elements based on description
+- `find-and-click <description>`: Find and click specified elements
 
-### 📱 设备管理
-- `get-device-info`：获取设备详细信息
-- `get-battery-status`：查看电池状态
-- `unlock-screen`：解锁屏幕
-- `lock-screen`：锁定屏幕
+### 📱 Device Management
+- `get-device-info`: Get detailed device information
+- `get-battery-status`: Check battery status
+- `unlock-screen`: Unlock the screen
+- `lock-screen`: Lock the screen
 
-### 📲 应用管理
-- `install-app <apk-path>`：安装应用
-- `uninstall-app <package-name>`：卸载应用
-- `launch-app <package-name>`：启动应用
-- `stop-app <package-name>`：停止应用
-- `clear-app-data <package-name>`：清除应用数据
-- `get-running-apps`：获取运行中应用列表
+### 📲 App Management
+- `install-app <apk-path>`: Install applications
+- `uninstall-app <package-name>`: Uninstall applications
+- `launch-app <package-name>`: Launch applications
+- `stop-app <package-name>`: Stop applications
+- `clear-app-data <package-name>`: Clear application data
+- `get-running-apps`: Get list of running applications
 
-### ⌨️ 输入控制
-- `input-text <text>`：输入文本
-- `press-key <keycode>`：模拟按键
-- `tap <x> <y>`：模拟点击
-- `swipe <x1> <y1> <x2> <y2>`：模拟滑动
-- `long-press <x> <y> <duration>`：模拟长按
-- `pinch <x> <y> <scale>`：模拟双指缩放
+### ⌨️ Input Control
+- `input-text <text>`: Input text
+- `press-key <keycode>`: Simulate key presses
+- `tap <x> <y>`: Simulate taps
+- `swipe <x1> <y1> <x2> <y2>`: Simulate swipes
+- `long-press <x> <y> <duration>`: Simulate long presses
+- `pinch <x> <y> <scale>`: Simulate pinch gestures
 
-### 📸 屏幕操作
-- `screenshot`：截图并保存
-- `get-screen-resolution`：获取屏幕分辨率
+### 📸 Screen Operations
+- `screenshot`: Take and save screenshots
+- `get-screen-resolution`: Get screen resolution
 
-## 🔧 配置选项
+## 🔧 Configuration Options
 
-### 环境变量
+### Environment Variables
 
-| 变量名 | 描述 | 默认值 | 用途 |
-|-------|------|-------|------|
-| `DEVICE_ID` | 设备ID（`adb devices`获取） | 无 | 必需，指定控制的设备 |
-| `ADB_PATH` | ADB工具路径 | `adb` | 可选，指定ADB位置 |
-| `OPENAI_API_KEY` | AI API密钥 | 无 | 可选，启用视觉功能 |
-| `VISION_MODEL` | 视觉模型名称 | `qwen2.5-vl-7b-instruct` | 可选，选择AI模型 |
-| `API_BASE_URL` | API基础URL | `https://api.openai.com/v1` | 可选，自定义API地址 |
+| Variable Name | Description | Default Value | Purpose |
+|--------------|-------------|---------------|---------|
+| `DEVICE_ID` | Device ID (obtained from `adb devices`) | None | Required, specifies the device to control |
+| `ADB_PATH` | ADB tool path | `adb` | Optional, specifies ADB location |
+| `OPENAI_API_KEY` | AI API key | None | Optional, enables vision features |
+| `VISION_MODEL` | Vision model name | `qwen2.5-vl-7b-instruct` | Optional, selects AI model |
+| `API_BASE_URL` | API base URL | `https://api.openai.com/v1` | Optional, customizes API address |
 
-### 命令行参数
+### Command Line Parameters
 
 ```bash
-java -jar mcp-android-adb-server.jar \
-  -d <device-id>      # 设备ID
-  -a <adb-path>       # ADB路径
-  -k <api-key>        # AI API密钥
-  -m <vision-model>   # 视觉模型
-  -u <api-url>        # API基础URL
+java -jar mcp-easy-doubao-phone-1.0.0-jar-with-dependencies.jar \
+  -d <device-id>      # Device ID
+  -a <adb-path>       # ADB path
+  -k <api-key>        # AI API key
+  -m <vision-model>   # Vision model
+  -u <api-url>        # API base URL
 ```
 
-## 🎯 应用场景
+## 🎯 Application Scenarios
 
-### 📱 自动化测试
-- 智能识别UI元素，无需硬编码坐标
-- 自然语言描述测试步骤，降低维护成本
+### 📱 Automated Testing
+- Intelligently identifies UI elements without hardcoding coordinates
+- Describes test steps in natural language, reducing maintenance costs
 
-### 🤖 辅助功能
-- 为视障用户提供屏幕内容语音描述
-- 简化复杂的手机操作流程
+### 🤖 Assistive Functions
+- Provides voice descriptions of screen content for visually impaired users
+- Simplifies complex phone operation processes
 
-### 🔬 研究开发
-- AI视觉模型在移动界面理解中的应用
-- 自然语言指令与设备控制的桥梁
+### 🔬 Research and Development
+- Application of AI vision models in mobile interface understanding
+- Bridge between natural language commands and device control
 
-### 🎮 游戏辅助
-- 智能识别游戏界面元素
-- 自动化完成重复操作
+### 🎮 Game Assistance
+- Intelligently recognizes game interface elements
+- Automatically completes repetitive operations
 
-## 🌟 未来规划
+## 🌟 Future Plans
 
-- [ ] **语音交互**：支持语音输入输出
-- [ ] **多设备管理**：同时控制多台Android设备
-- [ ] **更强大的AI**：支持本地部署的视觉模型
-- [ ] **Web界面**：提供可视化控制面板
-- [ ] **任务自动化**：支持录制和回放操作序列
+- [ ] **Voice Interaction**: Support voice input and output
+- [ ] **Multi-Device Management**: Control multiple Android devices simultaneously
+- [ ] **More Powerful AI**: Support locally deployed vision models
+- [ ] **Web Interface**: Provide visual control panel
+- [ ] **Task Automation**: Support recording and playback of operation sequences
 
-## 📄 许可证
+## 📄 License
 
-MIT License - 详见LICENSE文件
+MIT License - See LICENSE file for details
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎提交Issue和Pull Request，一起打造更强大的豆包手机助手！
+Welcome to submit Issues and Pull Requests to build a more powerful Doubao phone assistant together!
 
 ---
 
-💡 **提示**：本项目需要配合Android设备使用，确保已正确安装ADB并开启USB调试模式。视觉功能需要有效的OpenAI API密钥。
+💡 **Tip**: This project requires Android device. Ensure ADB is correctly installed and USB debugging is enabled. Vision features require a valid OpenAI API key.
 
-📞 **技术支持**：遇到问题？查看项目文档或提交Issue获取帮助。
+📞 **Technical Support**: Encounter problems? Check project documentation or submit an Issue for help.
+
+[Switch to Chinese Version](README.zh-CN.md)
 
