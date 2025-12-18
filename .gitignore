@@ -12,9 +12,9 @@ dist/
 go.mod
 go.sum
 main.go
-device/
-tools/
-vision/
+/device/
+/tools/
+/vision/
 
 # 日志文件
 *.log
