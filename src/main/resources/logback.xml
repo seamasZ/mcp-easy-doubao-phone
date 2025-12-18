@@ -1,0 +1,39 @@
+<configuration>
+    <!-- 控制台输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 文件输出 -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>mcp-android-adb-server.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 异步输出 -->
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE" />
+    </appender>
+    
+    <!-- 根日志级别 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ASYNC_FILE" />
+    </root>
+    
+    <!-- 特定包的日志级别 -->
+    <logger name="com.example.device" level="INFO" />
+    <logger name="com.example.tools" level="INFO" />
+    <logger name="com.example.vision" level="INFO" />
+    <logger name="com.example.Main" level="INFO" />
+    
+    <!-- 第三方库的日志级别 -->
+    <logger name="io.appium" level="WARN" />
+    <logger name="okhttp3" level="WARN" />
+    <logger name="org.apache.http" level="WARN" />
+    <logger name="com.theokanning.openai" level="INFO" />
+</configuration>

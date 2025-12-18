@@ -1,0 +1,61 @@
+# IDE相关
+.idea
+.vscode
+.DS_Store
+
+# 构建产物
+target/
+dist/
+
+# Go相关文件（忽略）
+*.go
+go.mod
+go.sum
+main.go
+device/
+tools/
+vision/
+
+# 日志文件
+*.log
+
+# 可执行文件
+*.exe
+mcp-android-adb-server
+
+# 截图
+screenshots/
+
+# 文档
+docs/
+
+# 临时文件
+*.tmp
+*.temp
+
+# OS临时文件
+Thumbs.db
+
+# Maven相关（保留）
+# .mvn/ - 保留Maven配置
+# pom.xml - 保留项目配置
+# settings.xml - 保留项目配置
+
+# Java源代码（保留）
+# src/ - 保留源代码
+
+# README文件（保留）
+# README.md
+# README.zh-CN.md
+
+# 许可证（保留）
+# LICENSE
+
+# Docker（保留）
+# Dockerfile
+
+# Makefile（保留）
+# Makefile
+
+# Smithery配置（保留）
+# smithery.yaml

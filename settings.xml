@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <mirrors>
+        <!-- Maven Central Mirror -->
+        <mirror>
+            <id>aliyun-central</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Aliyun Central Mirror</name>
+            <url>https://maven.aliyun.com/repository/central</url>
+        </mirror>
+        
+        <!-- Google Repository Mirror -->
+        <mirror>
+            <id>aliyun-google</id>
+            <mirrorOf>google</mirrorOf>
+            <name>Aliyun Google Mirror</name>
+            <url>https://maven.aliyun.com/repository/google</url>
+        </mirror>
+        
+        <!-- Android Repository Mirror -->
+        <mirror>
+            <id>aliyun-android</id>
+            <mirrorOf>android-maven</mirrorOf>
+            <name>Aliyun Android Mirror</name>
+            <url>https://maven.aliyun.com/repository/android</url>
+        </mirror>
+        
+        <!-- jcenter Mirror -->
+        <mirror>
+            <id>aliyun-jcenter</id>
+            <mirrorOf>jcenter</mirrorOf>
+            <name>Aliyun JCenter Mirror</name>
+            <url>https://maven.aliyun.com/repository/jcenter</url>
+        </mirror>
+    </mirrors>
+    
+    <profiles>
+        <profile>
+            <id>aliyun-repos</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo.maven.apache.org/maven2/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                </repository>
+                <repository>
+                    <id>google</id>
+                    <url>https://maven.google.com/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                </repository>
+                <repository>
+                    <id>android-maven</id>
+                    <url>https://maven.aliyun.com/repository/android</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                </repository>
+            </repositories>
+            
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>https://repo.maven.apache.org/maven2/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>google</id>
+                    <url>https://maven.google.com/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+</settings>
