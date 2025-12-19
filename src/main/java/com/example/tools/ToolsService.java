@@ -68,6 +68,7 @@ public class ToolsService {
         
         // 系统信息工具
         registerTool("get_device_info", new GetDeviceInfoTool(device));
+        registerTool("get_battery_info", new BatteryInfoTool(device));
         
         // 截图工具
         registerTool("screenshot", new ScreenshotTool(device));
@@ -158,6 +159,31 @@ public class ToolsService {
     public String getCurrentTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(new Date());
+    }
+    
+    /**
+     * 电池信息工具
+     */
+    class BatteryInfoTool implements Tool {
+        private AndroidDevice device;
+        
+        public BatteryInfoTool(AndroidDevice device) {
+            this.device = device;
+        }
+        
+        @Override
+        public ToolResult execute(Map<String, Object> params) throws Exception {
+            Map<String, Object> batteryInfo = device.getBatteryInfo();
+            ToolResult toolResult = new ToolResult();
+            toolResult.setMessage("获取电池信息成功");
+            toolResult.setData(batteryInfo);
+            return toolResult;
+        }
+        
+        @Override
+        public String getDescription() {
+            return "获取设备电池信息";
+        }
     }
 }
 
