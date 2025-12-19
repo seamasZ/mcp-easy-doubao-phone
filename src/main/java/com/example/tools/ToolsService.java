@@ -1,5 +1,7 @@
 package com.example.tools;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import com.example.device.AndroidDevice;
 import com.example.vision.VisionService;
 import org.slf4j.Logger;
@@ -147,6 +149,15 @@ public class ToolsService {
         systemInfo.put("os.version", System.getProperty("os.version"));
         systemInfo.put("java.version", System.getProperty("java.version"));
         return systemInfo;
+    }
+    
+    /**
+     * 获取当前时间
+     * @return 当前时间字符串
+     */
+    public String getCurrentTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(new Date());
     }
 }
 
