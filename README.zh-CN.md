@@ -1,3 +1,5 @@
+[切换到英文版本](README.md) Switch to English Version
+
 # MCP 简易豆包手机智能助手
 
 🔥 **AI驱动的Android设备智能管家** - 像豆包一样理解和控制你的手机！🔥
@@ -207,4 +209,3 @@ MIT License - 详见LICENSE文件
 
 📞 **技术支持**：遇到问题？查看项目文档或提交Issue获取帮助。
 
-[切换到英文版本](README.md)
