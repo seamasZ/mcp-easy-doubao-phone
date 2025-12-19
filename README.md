@@ -1,4 +1,4 @@
-[Switch to Chinese Version](README.zh-CN.md)
+[Switch to Chinese Version](README.zh-CN.md)  切换成中文
 
 # MCP Easy Doubao Phone AI Assistant
 
