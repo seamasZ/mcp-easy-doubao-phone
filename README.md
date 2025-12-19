@@ -1,3 +1,5 @@
+[Switch to Chinese Version](README.zh-CN.md)
+
 # MCP Easy Doubao Phone AI Assistant
 
 🔥 **AI-Driven Android Device Intelligent Manager** - Understand and control your phone like Doubao! 🔥
@@ -207,5 +209,4 @@ Welcome to submit Issues and Pull Requests to build a more powerful Doubao phone
 
 📞 **Technical Support**: Encounter problems? Check project documentation or submit an Issue for help.
 
-[Switch to Chinese Version](README.zh-CN.md)
 
