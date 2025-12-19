@@ -136,6 +136,18 @@ public class ToolsService {
     public VisionService getVisionService() {
         return visionService;
     }
+    
+    /**
+     * 获取系统信息
+     * @return 系统信息映射
+     */
+    public Map<String, String> getSystemInfo() {
+        Map<String, String> systemInfo = new HashMap<>();
+        systemInfo.put("os.name", System.getProperty("os.name"));
+        systemInfo.put("os.version", System.getProperty("os.version"));
+        systemInfo.put("java.version", System.getProperty("java.version"));
+        return systemInfo;
+    }
 }
 
 /**
