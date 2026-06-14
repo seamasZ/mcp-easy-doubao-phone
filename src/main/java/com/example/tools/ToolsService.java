@@ -1,12 +1,13 @@
 package com.example.tools;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import com.example.device.AndroidDevice;
 import com.example.vision.VisionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,11 +113,11 @@ public class ToolsService {
     }
     
     /**
-     * 获取所有注册的工具名称
+     * 获取所有注册的工具名称（返回不可变副本，防止外部修改）
      * @return 工具名称列表
      */
     public Map<String, Tool> getTools() {
-        return tools;
+        return Collections.unmodifiableMap(new HashMap<>(tools));
     }
     
     /**
@@ -152,13 +153,16 @@ public class ToolsService {
         return systemInfo;
     }
     
+    // 线程安全的日期格式化器，缓存复用
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = 
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
     /**
-     * 获取当前时间
+     * 获取当前时间（优化版：使用线程安全的 DateTimeFormatter）
      * @return 当前时间字符串
      */
     public String getCurrentTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return sdf.format(new Date());
+        return LocalDateTime.now().format(DATE_TIME_FORMATTER);
     }
     
     /**

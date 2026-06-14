@@ -266,18 +266,25 @@ public class AndroidDevice {
     }
     
     /**
-     * 截图
+     * 截图（优化版：使用 exec-out 直接输出到本地，避免临时文件）
      * @param outputPath 输出路径
      * @return 是否截图成功
      */
     public boolean screenshot(String outputPath) {
         try {
             logger.info("正在截图，保存到: {}", outputPath);
-            runAdbCommand("shell screencap -p /sdcard/screenshot.png");
-            runAdbCommand("pull /sdcard/screenshot.png " + outputPath);
-            runAdbCommand("shell rm /sdcard/screenshot.png");
-            logger.info("截图成功");
-            return true;
+            // 使用 exec-out 直接输出截图数据到本地，避免在设备上创建临时文件
+            String fullCommand = adbPath + " -s " + deviceId + " exec-out screencap -p";
+            ProcessBuilder pb = new ProcessBuilder(fullCommand.split(" "));
+            pb.redirectOutput(new java.io.File(outputPath));
+            Process process = pb.start();
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                logger.info("截图成功");
+                return true;
+            } else {
+                throw new IOException("截图命令退出码: " + exitCode);
+            }
         } catch (Exception e) {
             logger.error("截图失败", e);
             return false;
@@ -303,7 +310,7 @@ public class AndroidDevice {
     }
     
     /**
-     * 运行ADB命令
+     * 运行ADB命令（优化版：跨平台支持，直接执行 adb 而非依赖 cmd.exe）
      * @param command 命令参数
      * @return 命令输出
      * @throws IOException IO异常
@@ -313,8 +320,19 @@ public class AndroidDevice {
         String fullCommand = adbPath + " -s " + deviceId + " " + command;
         logger.debug("运行ADB命令: {}", fullCommand);
         
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command("cmd.exe", "/c", fullCommand);
+        // 跨平台：直接执行 adb 命令，不依赖 Windows cmd.exe
+        List<String> cmdList = new ArrayList<>();
+        cmdList.add(adbPath);
+        cmdList.add("-s");
+        cmdList.add(deviceId);
+        // 将 command 按空格拆分（简单处理，不含引号嵌套场景）
+        for (String part : command.split("\\s+")) {
+            if (!part.isEmpty()) {
+                cmdList.add(part);
+            }
+        }
+        
+        ProcessBuilder processBuilder = new ProcessBuilder(cmdList);
         Process process = processBuilder.start();
         
         StringBuilder output = new StringBuilder();

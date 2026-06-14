@@ -68,7 +68,7 @@ public class VisionService {
     }
     
     /**
-     * 将图像文件转换为Base64编码
+     * 将图像文件转换为Base64编码（优化版：使用流式读取减少内存占用）
      * @param imagePath 图像文件路径
      * @return Base64编码的图像数据
      * @throws IOException IO异常
@@ -76,11 +76,18 @@ public class VisionService {
     public String imageToBase64(String imagePath) throws IOException {
         logger.info("将图像转换为Base64: {}", imagePath);
         
-        byte[] imageBytes = Files.readAllBytes(new File(imagePath).toPath());
-        String base64 = Base64.getEncoder().encodeToString(imageBytes);
-        
-        logger.debug("图像Base64编码完成，长度: {}", base64.length());
-        return base64;
+        // 使用流式读取，避免一次性加载大文件到内存
+        try (java.io.InputStream is = Files.newInputStream(new File(imagePath).toPath())) {
+            java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
+            byte[] chunk = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = is.read(chunk)) != -1) {
+                buffer.write(chunk, 0, bytesRead);
+            }
+            String base64 = Base64.getEncoder().encodeToString(buffer.toByteArray());
+            logger.debug("图像Base64编码完成，长度: {}", base64.length());
+            return base64;
+        }
     }
     
     /**
