@@ -227,12 +227,16 @@ public class AndroidDevice {
     }
     
     /**
-     * 点击屏幕
+     * 点击屏幕（带参数校验）
      * @param x X坐标
      * @param y Y坐标
      * @return 是否点击成功
      */
     public boolean tap(int x, int y) {
+        if (x < 0 || y < 0) {
+            logger.error("点击坐标不能为负数: ({}, {})", x, y);
+            return false;
+        }
         try {
             logger.info("正在点击屏幕: ({}, {})", x, y);
             runAdbCommand("shell input tap " + x + " " + y);
@@ -245,7 +249,7 @@ public class AndroidDevice {
     }
     
     /**
-     * 滑动屏幕
+     * 滑动屏幕（带参数校验）
      * @param startX 起始X坐标
      * @param startY 起始Y坐标
      * @param endX 结束X坐标
@@ -254,6 +258,14 @@ public class AndroidDevice {
      * @return 是否滑动成功
      */
     public boolean swipe(int startX, int startY, int endX, int endY, int duration) {
+        if (startX < 0 || startY < 0 || endX < 0 || endY < 0) {
+            logger.error("滑动坐标不能为负数");
+            return false;
+        }
+        if (duration < 0) {
+            logger.error("滑动持续时间不能为负数: {}", duration);
+            return false;
+        }
         try {
             logger.info("正在滑动屏幕: ({}, {}) -> ({}, {})", startX, startY, endX, endY);
             runAdbCommand("shell input swipe " + startX + " " + startY + " " + endX + " " + endY + " " + duration);
@@ -305,6 +317,41 @@ public class AndroidDevice {
             info.put("apiLevel", runAdbCommand("shell getprop ro.build.version.sdk").trim());
         } catch (Exception e) {
             logger.error("获取设备信息失败", e);
+        }
+        return info;
+    }
+    
+    /**
+     * 获取电池信息
+     * @return 电池信息映射
+     */
+    public Map<String, Object> getBatteryInfo() {
+        Map<String, Object> info = new HashMap<>();
+        try {
+            String output = runAdbCommand("shell dumpsys battery").trim();
+            // 解析电池信息
+            for (String line : output.split("\n")) {
+                line = line.trim();
+                if (line.startsWith("level:")) {
+                    info.put("level", Integer.parseInt(line.split(":")[1].trim()));
+                } else if (line.startsWith("scale:")) {
+                    info.put("scale", Integer.parseInt(line.split(":")[1].trim()));
+                } else if (line.startsWith("status:")) {
+                    info.put("status", line.split(":")[1].trim());
+                } else if (line.startsWith("health:")) {
+                    info.put("health", line.split(":")[1].trim());
+                } else if (line.startsWith("present:")) {
+                    info.put("present", Boolean.parseBoolean(line.split(":")[1].trim()));
+                } else if (line.startsWith("AC powered:")) {
+                    info.put("acPowered", Boolean.parseBoolean(line.split(":")[1].trim()));
+                } else if (line.startsWith("USB powered:")) {
+                    info.put("usbPowered", Boolean.parseBoolean(line.split(":")[1].trim()));
+                } else if (line.startsWith("temperature:")) {
+                    info.put("temperature", Integer.parseInt(line.split(":")[1].trim()) / 10.0);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("获取电池信息失败", e);
         }
         return info;
     }

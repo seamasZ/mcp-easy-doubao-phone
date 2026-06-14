@@ -5,8 +5,11 @@ import com.theokanning.openai.OpenAiService;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.image.CreateImageRequest;
+import com.theokanning.openai.service.OpenAiApi;
+import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import retrofit2.Retrofit;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -47,8 +51,12 @@ public class VisionService {
         this(apiKey, modelName, "https://api.openai.com/v1"); // 默认OpenAI API地址
     }
     
+    private static final int MAX_RETRIES = 3;
+    private static final Duration CONNECT_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration READ_TIMEOUT = Duration.ofSeconds(60);
+    
     /**
-     * 构造函数
+     * 构造函数（优化版：带超时和重试配置）
      * @param apiKey OpenAI API密钥
      * @param modelName 模型名称
      * @param apiBaseUrl API基础URL
@@ -58,10 +66,22 @@ public class VisionService {
         this.apiBaseUrl = apiBaseUrl;
         this.objectMapper = new ObjectMapper();
         
-        // 初始化OpenAI服务
+        // 初始化OpenAI服务（带自定义超时）
         if (apiKey != null && !apiKey.isEmpty()) {
-            this.openAiService = new OpenAiService(apiKey);
-            logger.info("视觉服务已初始化，模型: {}", modelName);
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(CONNECT_TIMEOUT)
+                    .readTimeout(READ_TIMEOUT)
+                    .writeTimeout(READ_TIMEOUT)
+                    .build();
+            
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(apiBaseUrl)
+                    .client(client)
+                    .build();
+            
+            OpenAiApi api = retrofit.create(OpenAiApi.class);
+            this.openAiService = new OpenAiService(api);
+            logger.info("视觉服务已初始化，模型: {}, 超时: {}s", modelName, READ_TIMEOUT.getSeconds());
         } else {
             logger.warn("未提供API密钥，视觉服务功能将不可用");
         }
@@ -91,7 +111,7 @@ public class VisionService {
     }
     
     /**
-     * 生成截图描述
+     * 生成截图描述（带重试机制）
      * @param imagePath 截图文件路径
      * @param prompt 用户提示
      * @return 截图描述
@@ -119,7 +139,7 @@ public class VisionService {
         userMessage.setContent(prompt + "\n\n" + "data:image/png;base64," + base64Image);
         messages.add(userMessage);
         
-        // 发送请求
+        // 发送请求（带重试）
         ChatCompletionRequest request = ChatCompletionRequest.builder()
                 .model(modelName)
                 .messages(messages)
@@ -127,11 +147,32 @@ public class VisionService {
                 .temperature(0.7)
                 .build();
         
-        String response = openAiService.createChatCompletion(request)
-                .getChoices().get(0).getMessage().getContent();
+        String response = null;
+        int attempts = 0;
+        Exception lastException = null;
         
-        logger.info("截图描述生成完成");
-        return response;
+        while (attempts < MAX_RETRIES) {
+            try {
+                response = openAiService.createChatCompletion(request)
+                        .getChoices().get(0).getMessage().getContent();
+                logger.info("截图描述生成完成（尝试 {}/{}）", attempts + 1, MAX_RETRIES);
+                return response;
+            } catch (Exception e) {
+                lastException = e;
+                attempts++;
+                logger.warn("API调用失败（尝试 {}/{}）: {}", attempts, MAX_RETRIES, e.getMessage());
+                if (attempts < MAX_RETRIES) {
+                    try {
+                        Thread.sleep(1000L * attempts); // 指数退避
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
+        }
+        
+        throw new IOException("API调用失败，已重试 " + MAX_RETRIES + " 次", lastException);
     }
     
     /**

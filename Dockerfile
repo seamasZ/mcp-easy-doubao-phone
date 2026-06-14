@@ -1,32 +1,39 @@
 # Build stage
-FROM golang:1.23-alpine AS builder
+FROM maven:3.9-eclipse-temurin-17-alpine AS builder
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy go.mod and go.sum files first for dependency resolution
-COPY go.mod go.sum ./
+# Copy pom.xml first for dependency caching
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-# Download dependencies
-RUN go mod download
+# Copy source code
+COPY src ./src
 
-# Copy the entire source code into the container
-COPY . .
-
-# Build the binary for Linux
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o dist/mcp-android-adb-server_linux_amd64 .
+# Build the application
+RUN mvn clean package -DskipTests -B
 
 # Final stage
-FROM alpine:latest
+FROM eclipse-temurin:17-jre-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy the compiled binary from the builder stage
-COPY --from=builder /app/dist/mcp-android-adb-server_linux_amd64 /usr/local/bin/mcp-android-adb-server
+# Install adb for Android device communication
+RUN apk add --no-cache android-tools
 
-# Expose any ports the application requires, if necessary
-# EXPOSE <port>
+# Copy the built JAR from builder stage
+COPY --from=builder /app/target/mcp-easy-doubao-phone-1.0.0-jar-with-dependencies.jar /app/mcp-easy-doubao-phone.jar
 
-# Set the entrypoint to the compiled binary
-ENTRYPOINT ["mcp-android-adb-server"]
+# Create non-root user for security
+RUN addgroup -g 1001 appgroup && \
+    adduser -u 1001 -G appgroup -s /bin/sh -D appuser
+USER appuser
+
+# Set environment variables
+ENV ADB_PATH=/usr/bin/adb
+
+# Expose port if needed for future HTTP API
+EXPOSE 8080
+
+# Entry point
+ENTRYPOINT ["java", "-jar", "/app/mcp-easy-doubao-phone.jar"]
